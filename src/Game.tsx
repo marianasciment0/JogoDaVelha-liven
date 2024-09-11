@@ -75,7 +75,7 @@ const Game: React.FC = () => {
         </>
       );
     } else {
-      return "Next player: " + (nextPlayer === 'X' ? "❌" : "⭕");
+      return "Next player: " + nextPlayer;
     }
   };
 

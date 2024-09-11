@@ -5,12 +5,13 @@
 import { useState } from "react";
 import { calculateWinner } from "./utils";
 
-type Player = "X" | "O";
+type Player = "❌" | "⭕";
 
 const useGameState = () => {
   const [currentBoard, setCurrentBoard] = useState<(string | null)[]>(Array(9).fill(null));
   const [stepNumber, setStepNumber] = useState(0);
-  const [nextPlayer, setNextPlayer] = useState<Player>("O");
+  const [nextPlayer, setNextPlayer] = useState<Player>("❌");
+  const [initialPlayer, setInitialPlayer] = useState<Player>("❌");
 
   const computeMove = (squareId: number) => {
     setCurrentBoard((board) => {
@@ -20,7 +21,7 @@ const useGameState = () => {
       }
       newBoard[squareId] = nextPlayer;
       setStepNumber((prevStepNumber) => prevStepNumber + 1);
-      setNextPlayer((prevPlayer) => (prevPlayer === "X" ? "O" : "X"));
+      setNextPlayer((prevPlayer) => (prevPlayer === "❌" ? "⭕" : "❌"));
       return newBoard;
     });
   };
@@ -28,7 +29,11 @@ const useGameState = () => {
   const restartGame = () => {
     setCurrentBoard(Array(9).fill(null));
     setStepNumber(0);
-    setNextPlayer("O");
+  
+    // Alterna o jogador inicial para a próxima rodada
+    const newInitialPlayer = initialPlayer === "❌" ? "⭕" : "❌";
+    setNextPlayer(newInitialPlayer);
+    setInitialPlayer(newInitialPlayer);
   };
 
   return {
@@ -36,7 +41,7 @@ const useGameState = () => {
     stepNumber,
     nextPlayer,
     computeMove,
-    restartGame
+    restartGame,
   };
 };
 
